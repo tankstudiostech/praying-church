@@ -9,7 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.14.2",
     "express": "^4.13.3",
+    "jsonwebtoken": "^5.4.1",
+    "md5": "^2.0.0",
+    "morgan": "^1.6.1",
     "pg": "^4.4.3"
   }
 }
