@@ -22,8 +22,15 @@ exports.createPerson = function(person, cb) {
 };
 
 exports.findByEmail = function(email, cb) {
-    var cursor = db.collection('persons').find( {'email': email});
-    cursor.each(function(err, res) {
-        console.log(res);
+    db.collection('persons').findOne( {'email': email}, function(err, res) {
+        if(err) return cb({err: true, message: err});
+        if(!res) return cb({err: true, message: 'Could not find person with email \'' + email + '\'.'});
+        else cb(res);
+    });
+};
+
+exports.updatePerson = function(person, cb) {
+    exports.findByEmail(person.eamil, function(res) {
+        if(res.err) cb(res);
     });
 };
