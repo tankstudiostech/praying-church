@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 var md5 = require('md5');
 var config = require('./config');
 var person = require('./app/models/person');
+var personRepo = require('./app/repositories/mongoPersonRepository');
 var pgusers = require('./postgresql/pgusers');
 var port = process.env.PORT || 5000;
 
@@ -20,8 +21,15 @@ app.get('/', function(req, res) {
 });
 
 app.get('/createuser', function(req, res) {
-    createPerson(function(result) {
-        res.send(result.message); 
+    var newguy = new person.Person('coolemail', 'fname', 'lname');
+    personRepo.createPerson(newguy, function(result) {
+        res.send(result);
+    })
+});
+
+app.get('/getuser', function(req, res) {
+    personRepo.findByEmail('coolemail', function(result) {
+        res.send(result);
     });
 });
 
