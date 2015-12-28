@@ -4,7 +4,7 @@ var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
 var md5 = require('md5');
 var config = require('./config');
-var user = require('./app/models/user');
+var person = require('./app/models/person');
 var pgusers = require('./postgresql/pgusers');
 var port = process.env.PORT || 5000;
 
@@ -20,17 +20,17 @@ app.get('/', function(req, res) {
 });
 
 app.get('/createuser', function(req, res) {
-    createUser(function(err, message) {
-       if(err) res.send(err);
-       else res.send(message); 
+    createPerson(function(result) {
+        res.send(result.message); 
     });
 });
 
-var createUser = function(cb) {
-    var newguy = new user.User('email', 'fname', 'lname', md5('pword'));
-    pgusers.insert(newguy, function(err, res) {
-        if(err) return cb(err);
-        cb(undefined, newguy.fullName() + ' has been created!');    
+var createPerson = function(cb) {
+    var newguy = new person.Person('newemail', 'fname', 'lname');
+    pgusers.createPerson(newguy, function(res) {
+        if(res.err) return cb(res);
+        console.log(res);
+        cb({err: false, message: newguy.fullName() + ' has been created!'});    
     });
 };
 
