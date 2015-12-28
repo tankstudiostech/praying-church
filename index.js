@@ -26,11 +26,11 @@ app.get('/createuser', function(req, res) {
 });
 
 var createPerson = function(cb) {
-    var newguy = new person.Person('newemail', 'fname', 'lname');
+    var newguy = new person.Person('coolemail', 'fname', 'lname');
     pgusers.createPerson(newguy, function(res) {
         if(res.err) return cb(res);
         console.log(res);
-        cb({err: false, message: newguy.fullName() + ' has been created!'});    
+        cb({err: false, message: newguy.fullName() + ' has been created as id ' + res.newid + '!'});    
     });
 };
 

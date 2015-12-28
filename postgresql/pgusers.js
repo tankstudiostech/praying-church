@@ -24,7 +24,7 @@ exports.createPerson = function(person, cb) {
             
                 console.log(result.rows[0].id);
                 client.end();
-                cb(result);
+                cb({err: false, newid: result.rows[0].id});
             });
         });
         
@@ -40,14 +40,12 @@ exports.personExists = function(person, cb) {
         console.log(query);
         
         client.query(query, function(err, result) {
-            if(err) {
-                console.error('error determining if person exists', err);
-                cb(err);
-                return;
-            }
+            if(err) return cb({err: true, message: err})
             console.log(result);
             client.end();
-            cb({err: false, personExists: result});
+            console.log('does it exist?');
+            console.log(result.rows[0].exists);
+            cb({err: false, personExists: result.rows[0].exists});
         });
     });
 };
