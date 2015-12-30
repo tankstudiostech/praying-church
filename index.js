@@ -4,12 +4,9 @@ var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
 var md5 = require('md5');
 var config = require('.config/config');
-var personRepo = require('./app/repositories/mongoPersonRepository');
 var mongoose = require ('mongoose');
-var Person = require('./app/models/person');
 mongoose.connect(config.mongoCn);
-
-var url = require('url');
+var Person = require('./app/models/person');
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
