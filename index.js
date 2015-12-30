@@ -2,7 +2,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
-var md5 = require('md5');
 var config = require('./config/config');
 var mongoose = require ('mongoose');
 mongoose.connect(config.mongoCn);
