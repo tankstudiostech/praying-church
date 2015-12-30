@@ -1,7 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
-var jwt = require('jsonwebtoken');
 var config = require('./config/config');
 var mongoose = require ('mongoose');
 mongoose.connect(config.mongoCn);
@@ -13,7 +12,8 @@ app.use(morgan('dev'));
 
 var router = express.Router();
 
-require('./app/routes/memberRoutes.js')(router);
+require('./app/routes/authentication.js')(router, app);
+require('./app/routes/member.js')(router);
 
 router.use(function(req, res, next) {
     console.log('Something is happening.');
