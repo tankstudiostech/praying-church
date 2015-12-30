@@ -1,20 +1,11 @@
 
-exports.Person = function(email, fname, lname)
-{
-    this.email = email;
-    this.fname = fname;
-    this.lname = lname;
-    this.fullName = function() {
-        return this.fname + ' ' + this.lname;  
-    }
-};
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-exports.Member = function(email, fname, lname, pword, role) {
-    this.email = email;
-    this.fname = fname;
-    this.lname = lname;
-    this.password = pword;
-    this.role = role;
-}
+var PersonSchema = new Schema({
+    email: String,
+    fname: String,
+    lname: String,
+});
 
-exports.Member.__proto__ = exports.Person;
+module.exports = mongoose.model('Person', PersonSchema);

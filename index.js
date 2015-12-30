@@ -3,43 +3,85 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
 var md5 = require('md5');
-var config = require('./config');
-var person = require('./app/models/person');
+var config = require('.config/config');
 var personRepo = require('./app/repositories/mongoPersonRepository');
-var port = process.env.PORT || 5000;
+var mongoose = require ('mongoose');
+var Person = require('./app/models/person');
+mongoose.connect(config.mongoCn);
+
+var url = require('url');
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use(morgan('dev'));
 
-//var db = require('./database.js');
-app.get('/', function(req, res) {
-    res.send('Hello World! You are awesome!'); 
+var router = express.Router();
+
+router.use(function(req, res, next) {
+    console.log('Something is happening.');
+    next();    
 });
 
-app.get('/createuser', function(req, res) {
-    var newguy = new person.Person('coolemail', 'fname', 'lname');
-    personRepo.createPerson(newguy, function(result) {
-        res.send(result);
+router.get('/', function(req, res) {
+    res.json({ message: 'hooray! welcome to our api!' });   
+});
+
+router.route('/persons')
+    .post(function(req, res) {
+        var person = new Person();
+        person.email = req.body.email;
+        person.fname = req.body.fname;
+        person.lname = req.body.lname;
+        
+        person.save(function(err) {
+            if(err) res.send(err);
+            
+            res.json({message: 'Person created!'});
+        })
     })
-});
-
-app.get('/getuser', function(req, res) {
-    personRepo.findByEmail('coolemail', function(result) {
-        res.send(result);
+    .get(function(req, res) {
+        Person.find(function(err, persons) {
+            if(err) res.send(err);
+            
+            res.json(persons);
+        })
     });
-});
 
-var createPerson = function(cb) {
-    var newguy = new person.Person('coolemail', 'fname', 'lname');
-    pgusers.createPerson(newguy, function(res) {
-        if(res.err) return cb(res);
-        console.log(res);
-        cb({err: false, message: newguy.fullName() + ' has been created as id ' + res.newid + '!'});    
+router.route('/persons/:personId')
+    .get(function(req, res) {
+        Person.findById(req.params.personId, function(err, person) {
+            if(err) res.send(err);
+            
+            res.json(person);
+        });  
+    })
+    .put(function(req, res) {
+        Person.findById(req.params.personId, function(err, person) {
+            if(err) res.send(err);
+            
+            person.email = req.body.email;
+            person.fname = req.body.fname;
+            person.lname = req.body.lname;
+            
+            person.save(function(err) {
+                if(err) res.send(err);
+                
+                res.json({message: 'Person updated!'});
+            });
+        });
+    })
+    .delete(function(req, res) {
+        Person.remove({
+            _id: req.params.personId
+        }, function(err, person) {
+            if(err) res.send(err);
+            
+            res.json({message: 'Successfully deleted'})
+        });
     });
-};
+    
+app.use('/api', router);
 
-var server = app.listen(port);
-console.log('Listening at port: ' + port);
+app.listen(config.port);
+console.log('Listening at port: ' + config.port);
