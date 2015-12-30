@@ -6,7 +6,6 @@ var md5 = require('md5');
 var config = require('./config');
 var person = require('./app/models/person');
 var personRepo = require('./app/repositories/mongoPersonRepository');
-var pgusers = require('./postgresql/pgusers');
 var port = process.env.PORT || 5000;
 
 var app = express();
