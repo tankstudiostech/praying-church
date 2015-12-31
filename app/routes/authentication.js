@@ -12,13 +12,11 @@ module.exports = function(router, app) {
             
             if(!member) {
                 res.json({err: true, message: 'Authentication failed.  User not found.'});
-            } else if(false) {
-                console.log(member.pword);
-                console.log(req.body.pword);
+            } else if(member.pword != md5(req.body.pword)) {
                 res.json({err: true, message: 'Authentication failed.  Wrong password.'});
             } else {
                 console.log(config.secret);
-                var token = jwt.sign(member, app.get(config.secret), {
+                var token = jwt.sign(member, app.get('yaysecrets'), {
                     expiresIn: 1440 * 60
                 });
                 
@@ -30,6 +28,8 @@ module.exports = function(router, app) {
     });
     
     router.use(function(req, res, next) {
+        if(config.bypassAuth) return next();
+        
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
         
         if(token) {
