@@ -5,9 +5,8 @@ module.exports = function(router) {
     router.route('/members')
     .post(function(req, res) {
         var member = new Member();
-        member.email = req.body.email;
-        member.fname = req.body.fname;
-        member.lname = req.body.lname;
+        
+        member = updateMemberFromReq(member, req);
         
         member.save(function(err) {
             if(err) res.json({err: true, message: err});
@@ -36,11 +35,8 @@ router.route('/members/:memberId')
         Member.findById(req.params.memberId, function(err, member) {
             if(err) res.json({err: true, message: err});
             if(!member) res.json({err: true, message: 'Could not find member by id ' + req.params.memberId});
-            member.email = req.body.email;
-            member.fname = req.body.fname;
-            member.lname = req.body.lname;
-            member.pword = md5(req.body.pword);
-            member.role = req.body.role;
+            
+            member = updateMemberFromReq(member, req);
             
             member.save(function(err) {
                 if(err) res.json({err: true, message: err});
@@ -58,4 +54,14 @@ router.route('/members/:memberId')
             res.json({err: false, message: 'Successfully deleted'})
         });
     });
+    
+    var updateMemberFromReq = function(member, req) {
+        member.email = req.body.email;
+        member.fname = req.body.fname;
+        member.lname = req.body.lname;
+        member.pword = md5(req.body.pword);
+        member.role = req.body.role;
+        
+        return member;
+    };
 };
