@@ -2,5 +2,6 @@ module.exports = {
     secret: '',
     mongoCn: '',
     port: process.env.PORT || 5000,
-    bypassAuth: false
+    bypassAuth: true,
+    tokenExpiration: 24 * 60 * 60
 };

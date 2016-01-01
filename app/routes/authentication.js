@@ -17,7 +17,7 @@ module.exports = function(router) {
             } else {
                 console.log(config.secret);
                 var token = jwt.sign(member, config.secret, {
-                    expiresIn: 1440 * 60
+                    expiresIn: config.tokenExpiration
                 });
                 
                 res.json({
