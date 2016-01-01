@@ -1,10 +1,11 @@
-# user-management
+# User Management
 Template for quickly setting up simple user management
 
 I wanted a simple starting point for any app that requires user authentication.
 
 It uses Node, express, and MongoDB with Mongoose. Currently it only supports basic authentication using tokens.  Future plans will support Facebook, Google, and other types of authentication.
 
+# Getting Started
 To get started, set up config/config.js.
 
 * secret - the secret used for creating tokens
@@ -13,14 +14,17 @@ To get started, set up config/config.js.
 * bypassAuth - ignores token authentication
 * tokenExpiration - time until token expires, in seconds
 
-API Calls
+# API Calls
 
-POST api/authenticate
+*api/authenticate*
+
+POST
 Receives a valid user and returns a token.
 * email
 * pword
 
-api/members
+*api/members*
+
 POST
 Creates a member
 * email
@@ -29,11 +33,11 @@ Creates a member
 * pword
 * role
 
-api/members
 GET
 Returns all the members
 
-/members/:memberId
+*/members/:memberId*
+
 GET
 Finds the member by the member id
 
