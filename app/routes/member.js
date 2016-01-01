@@ -8,11 +8,17 @@ module.exports = function(router) {
         
         member = updateMemberFromReq(member, req);
         
-        member.save(function(err) {
-            if(err) res.json({err: true, message: err});
-            
-            res.json({err: false, message: 'Member created!'});
-        })
+        memberExists(member, function(existsRes) {
+            console.log(existsRes);
+            if(existsRes.err) return res.json(existsRes);
+            if(existsRes.result) return res.json({err: true, message: 'A member already exists with the email ' + member.email});
+        
+            member.save(function(err) {
+                if(err) res.json({err: true, message: err});
+                
+                res.json({err: false, message: 'Member created!'});
+            });
+        });
     })
     .get(function(req, res) {
         Member.find(function(err, members) {
@@ -63,5 +69,12 @@ router.route('/members/:memberId')
         member.role = req.body.role;
         
         return member;
+    };
+    
+    var memberExists = function(member, cb) {
+        Member.find({email: member.email}).limit(1).exec(function(err, result) {
+            if(err) return cb({err: true, message: err});
+            cb({err: false, result: result.length > 0});
+        });
     };
 };
