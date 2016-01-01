@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 var config = require('../../config/config');
 var md5 = require('md5');
 
-module.exports = function(router, app) {
+module.exports = function(router) {
     router.post('/authenticate', function(req, res) {
         Member.findOne({
             email: req.body.email,
@@ -16,7 +16,7 @@ module.exports = function(router, app) {
                 res.json({err: true, message: 'Authentication failed.  Wrong password.'});
             } else {
                 console.log(config.secret);
-                var token = jwt.sign(member, app.get('yaysecrets'), {
+                var token = jwt.sign(member, config.secret, {
                     expiresIn: 1440 * 60
                 });
                 
@@ -33,7 +33,7 @@ module.exports = function(router, app) {
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
         
         if(token) {
-            jwt.verify(token, app.get(config.secret), function(err, decoded) {
+            jwt.verify(token, config.secret, function(err, decoded) {
                 if(err) return res.json({err: true, message: 'Failed to authenticate token.'});
                 else {
                     req.decoded = decoded;

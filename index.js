@@ -12,7 +12,7 @@ app.use(morgan('dev'));
 
 var router = express.Router();
 
-require('./app/routes/authentication.js')(router, app);
+require('./app/routes/authentication.js')(router);
 require('./app/routes/member.js')(router);
 
 router.use(function(req, res, next) {
