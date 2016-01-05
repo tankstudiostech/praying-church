@@ -1,21 +1,35 @@
 {
-  "name": "user-management",
-  "version": "1.0.0",
-  "description": "Prebuild user management",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.14.2",
-    "express": "^4.13.3",
-    "jsonwebtoken": "^5.4.1",
-    "md5": "^2.0.0",
-    "mongodb": "^2.1.2",
-    "mongoose": "^4.3.4",
-    "morgan": "^1.6.1",
-    "pg": "^4.4.3"
-  }
+    "name": "praying-church",
+    "version": "1.0.0",
+    "description": "Helps churches pray",
+    "main": "index.js",
+    "scripts": {
+        "tsc": "tsc",
+        "tsc:w": "tsc -w",
+        "lite": "lite-server",
+        "start": "concurrent \"npm run tsc:w\" \"nodemon index.js\" "
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "angular2": "2.0.0-beta.0",
+        "body-parser": "^1.14.2",
+        "es6-promise": "^3.0.2",
+        "es6-shim": "^0.33.3",
+        "express": "^4.13.3",
+        "jsonwebtoken": "^5.4.1",
+        "md5": "^2.0.0",
+        "mongodb": "^2.1.2",
+        "mongoose": "^4.3.4",
+        "morgan": "^1.6.1",
+        "pg": "^4.4.3",
+        "reflect-metadata": "0.1.2",
+        "rxjs": "5.0.0-beta.0",
+        "systemjs": "0.19.6",
+        "zone.js": "0.5.10"
+    },
+    "devDependencies": {
+        "concurrently": "^1.0.0",
+        "typescript": "^1.7.3"
+    }
 }

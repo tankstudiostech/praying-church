@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>The Praying Chuch</title>
+
+        <!-- 1. Load libraries -->
+        <script src="angular2/bundles/angular2-polyfills.js"></script>
+        <script src="systemjs/dist/system.src.js"></script>
+        <script src="rxjs/bundles/Rx.js"></script>
+        <script src="angular2/bundles/angular2.dev.js"></script>
+
+        <!-- 2. Configure SystemJS -->
+        <script>
+            System.defaultJSExtensions = true;
+            System.config({
+                packages: {        
+                    app: {
+                        format: 'register',
+                        defaultExtension: 'js'
+                    }
+                }
+            });
+            System.import('lib/boot')
+                .then(null, console.error.bind(console));
+        </script>
+    </head>
+
+    <!-- 3. Display the application -->
+    <body>
+        <my-app>Loading...</my-app>
+    </body>
+</html>

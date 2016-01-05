@@ -26,5 +26,12 @@ router.get('/', function(req, res) {
 
 app.use('/api', router);
 
+app.get('/', function(req, res) {
+    res.sendfile('index.html');
+});
+
+app.use(express.static('node_modules'));
+app.use(express.static('public'));
+
 app.listen(config.port);
 console.log('Listening at port: ' + config.port);
